@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Empréstimos</title>
+</head>
+<body>
+    <h1>Lista de Empréstimos</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Data Empréstimo</th>
+                <th>Data Devolução</th>
+                <th>Usuário</th>
+                <th>Livro</th>
+            </tr>
+        </thead>
+        <tbody id="emprestimos-table">
+        </tbody>
+    </table>
+
+    <script>
+        fetch('/emprestimos')
+            .then(response => response.json())
+            .then(data => {
+                const table = document.getElementById('emprestimos-table');
+                data.forEach(emprestimo => {
+                    const row = `
+                        <tr>
+                            <td>${emprestimo.id_emprestimo}</td>
+                            <td>${emprestimo.dataEmprestimo}</td>
+                            <td>${emprestimo.dataDevolucao}</td>
+                            <td>${emprestimo.usuario.cpf}</td>
+                            <td>${emprestimo.livro.isbn}</td>
+                        </tr>
+                    `;
+                    table.innerHTML += row;
+                });
+            })
+            .catch(error => console.error('Erro ao carregar os empréstimos:', error));
+    </script>
+</body>
+</html>
